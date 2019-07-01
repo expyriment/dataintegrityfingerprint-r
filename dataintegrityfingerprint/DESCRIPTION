@@ -1,0 +1,15 @@
+Package: dataintegrityfingerprint
+Title: Data Integretiy Fingerprints
+Version: 0.2
+Authors@R: c(person("Oliver", "Lindemann", email = "oliver@expyriment.org",  role=c("aut", "cre")),
+			 person("Florian", "Krause", role = "aut", email = "florian@expyriment.org"))
+Description: Creating data integretiy fingerprints
+	<https://www.expyriment.org/DIF/>
+Depends: R (>= 3.0.0)
+Imports: digest
+License: MIT License
+Encoding: UTF-8
+URL: https://www.expyriment.org/DIF/
+BugReports: https://github.com/expyriment/dataintegrityfingerprint-r/issues
+LazyData: true
+RoxygenNote: 6.1.1.9000

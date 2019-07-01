@@ -5,12 +5,25 @@ Data Integrity Fingerprint (DIF)
 
 Oliver Lindemann (oliver@expyriment.org) & Florian Krause (florian@expyriment.org)
 
-General Documentation: http://expyriment.github.io/dataintegrityfingerprint
+General Documentation: http://expyriment.github.io/DIF
 
+### Installing
 
-Usage
+To install the latest development version, you can use `install_github` from the `devtools` package:
+
+```R
+## install devtools if necessary
+install.packages('devtools')
+## Load devtools package for install_github()
+library(devtools)
+## get BayesFactor from github
+install_github('expyriment/dataintegrityfingerprint-r', subdir='dataintegrityfingerprint', dependencies = TRUE)
 ```
-source('dif.R')
+
+
+### Usage
+```R
+library(dataintegrityfingerprint)
 
 d = DIF('<DATA_PATH>')
 print(d)

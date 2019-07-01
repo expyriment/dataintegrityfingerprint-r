@@ -2,20 +2,38 @@ library(digest)
 
 CHECKSUMS_SEPERATOR = "  "
 
+#' Create a checksum for a given file.
+#'
+#' Create a checksum for a given file.
+#' @param love Do you love cats? Defaults to TRUE.
+#' @keywords
+#' @export
+#' @examples
+#' file_hash()
+
 file_hash <- function(filename, hash_algorithm="sha256") {
   x = readBin(filename, what="raw", n=file.info(filename)$size)
   return(digest(x, algo=hash_algorithm,  serialize = F))
 }
 
+#' A Cat Function
+#'
+#' This function allows you to express your love of cats.
+#' @param love Do you love cats? Defaults to TRUE.
+#' @keywords cats
+#' @export
+#' @examples
+#' DIF()
+
 DIF <- function(folder, hash_algorithm="sha256") {
   filelist = list.files(folder, recursive=T, all.files=T)
   hashes = c()
   for (f in filelist) {
-    hashes = c(hashes, 
+    hashes = c(hashes,
                file_hash(filename=file.path(folder, f),
                          hash_algorithm=hash_algorithm))
-  }  
- 
+  }
+
   rtn = list()
   rtn$folder = folder
   rtn$hash_algorithm = hash_algorithm
