@@ -17,7 +17,7 @@ install.packages('devtools')
 ## Load devtools package for install_github()
 library(devtools)
 ## get BayesFactor from github
-install_github('expyriment/dataintegrityfingerprint-r', subdir='dataintegrityfingerprint', dependencies = TRUE)
+install_github('expyriment/dataintegrityfingerprint-r', subdir='dataintegrityfingerprint')
 ```
 
 
