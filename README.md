@@ -14,9 +14,9 @@ To install the latest development version, you can use `install_github` from the
 ```R
 ## install devtools if necessary
 install.packages('devtools')
-## Load devtools package for install_github()
+
+## install package
 library(devtools)
-## get BayesFactor from github
 install_github('expyriment/dataintegrityfingerprint-r', subdir='dataintegrityfingerprint')
 ```
 
