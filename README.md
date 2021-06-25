@@ -27,7 +27,6 @@ library(dataintegrityfingerprint)
 
 d = DIF('<DATA_PATH>')
 print(d)
-summary(d) # show checksums
 write_checksums(d, filename="data.checksums")
 ```
 

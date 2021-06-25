@@ -38,3 +38,5 @@ rsconnect/
 
 #vim
 *.swp
+
+test.R

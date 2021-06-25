@@ -15,9 +15,9 @@ file_hash <- function(filename, hash_algorithm="sha256") {
 }
 
 
-#' Create a Data Integrity Fingerprint
+#' Create a XXXX
 #'
-#' Create a Data Integrity Fingerprint
+#' Create a XXX
 #' @param param TODO
 #' @export export
 #' @examples example
@@ -34,24 +34,15 @@ data_integrity_fingerprint <- function(folder, hash_algorithm="sha256") {
   rtn = list()
   rtn$folder = folder
   rtn$hash_algorithm = hash_algorithm
-  rtn$checksums = data.frame(hash = hashes, file = filelist)
+  rtn$file_hash_list = data.frame(hash = hashes, file = filelist)
+  # sorting list
+  #   byte-wise sorting (Capital letters first) like unix under locale "C"
+  idx = order(rtn$file_hash_list$file, method="radix")
+  rtn$file_hash_list = rtn$file_hash_list[idx, ]
   class(rtn) = "DIF"
-  return(sort(rtn))
+  return(rtn)
 }
 
-#' Sort checksums of a data integrity fingerprint
-#'
-#' Sort checksums of a data integrity fingerprint
-#' @param param TODO
-#' @export export
-#' @examples example
-
-sort.DIF <- function(x) {
-  # sorting byte-wise (captial letters first) like unix under locale "C"
-  idx = order(x$checksums$hash, x$checksums$file, method="radix")
-  x$checksums = x$checksums[idx, ]
-  return(x)
-}
 
 
 #' print data_integrity_fingerprint
@@ -65,12 +56,12 @@ print.DIF <- function(x) {
   cat("Folder: ")
   cat(x$folder)
   cat(" (Files n=")
-  cat(nrow(x$checksums))
+  cat(nrow(x$file_hash_list))
   cat(")")
   cat("\nAlgorithm: ")
   cat(x$hash_algorithm)
   cat("\nMaster hash: ")
-  cat(master_hash(x), "\n")
+  cat(dif(x), "\n")
 }
 
 #' String representations of the checksums and filenames
@@ -80,11 +71,11 @@ print.DIF <- function(x) {
 #' @export export
 #' @examples example
 
-checksums_str <- function(x) {
+checksums <- function(dif_obj) {
   rtn = ""
-  for (i in 1:nrow(x$checksums)) {
-    l = paste0(x$checksums[i,1], CHECKSUMS_SEPERATOR,
-               x$checksums[i,2], sep="\n")
+  for (i in 1:nrow(dif_obj$file_hash_list)) {
+    l = paste0(dif_obj$file_hash_list[i,1], CHECKSUMS_SEPERATOR,
+               dif_obj$file_hash_list[i,2], sep="\n")
     rtn = paste0(rtn, l)
   }
   return(rtn)
@@ -97,8 +88,19 @@ checksums_str <- function(x) {
 #' @export export
 #' @examples example
 
-master_hash <- function(x) {
-  return(digest(checksums_str(x), algo=x$hash_algorithm,  serialize = F))
+dif <- function(dif_obj) {
+
+  # make list of concatenate hashes and file names
+  lst = c()
+  for( i in 1:nrow(dif_obj$file_hash_list)) {
+    lst = c(lst, paste0(dif_obj$file_hash_list[i, 'hash'], dif_obj$file_hash_list[i, 'file']))
+  }
+  # sorting byte-wise (capital letters first) like Unix under locale "C"
+  idx = order(lst, method="radix")
+  # concatenate sorted list
+  concat_sorted = paste0(lst[idx], collapse='')
+  # return hash concat_sorted
+  return(digest(concat_sorted, algo=dif_obj$hash_algorithm,  serialize = F))
 }
 
 #' TODO A Cat Function
@@ -107,9 +109,9 @@ master_hash <- function(x) {
 #' @param param TODO
 #' @export export
 #' @examples example
-write_checksums <- function(x, filename) {
+write_checksums <- function(dif_obj, filename) {
   fl <- file(filename)
-  writeLines(checksums_str(x), fl, sep="")
+  writeLines(checksums(dif_obj), fl, sep="")
   close(fl)
 }
 
@@ -141,3 +143,4 @@ load_checksums <- function(filename, hash_algorithm) {
   class(rtn) = "DIF"
   return(sort(rtn))
 }
+
